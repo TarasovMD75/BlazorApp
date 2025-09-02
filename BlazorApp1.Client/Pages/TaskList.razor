@@ -3,33 +3,51 @@
 <table class="table">
     <thead>
         <tr>
+            <th>date</th>
             <th>Task review</th>
+            <th>ready</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var task in tasks)
         {
             <tr>
-                <td>@task</td>
+                <td>@task.Date.ToString()</td>
+                <td>@task.Description</td>
+                <td><InputCheckbox @bind-Value="task.Ready" /></td>
             </tr>
         }
     </tbody>
 </table>
 <div class="mt-3">
-    <input @bind="newTask" @bind:event="oninput" placeholder="Введите новую задачу" class="form-control mb-2" />
+    <input @bind="newTaskDescription" @bind:event="oninput" placeholder="Введите новую задачу" class="form-control mb-2" />
+    <InputDate @bind-Value="newTaskDate" class="form-control mb-2" />
     <button class="btn btn-primary" @onclick="AddtoList">Добавить задачу</button>
 </div>
 
-
 @code {
-    private List<string> tasks = new List<string>();
-    private string? newTask = null;
+    public class TaskItem
+    {
+        public string Description { get; set; } = string.Empty;
+        public DateTime Date { get; set; } = DateTime.Now;
+        public bool Ready { get; set; }
+    }
+    private List<TaskItem> tasks = new List<TaskItem>();
+    private string? newTaskDescription = null;
+    private DateTime newTaskDate = DateTime.Now;
     private void AddtoList()
     {
-        if (!string.IsNullOrWhiteSpace(newTask))
+        if (!string.IsNullOrWhiteSpace(newTaskDescription))
         {
+            var newTask = new TaskItem
+            {
+                Description = newTaskDescription,
+                Date = newTaskDate
+            };
+
             tasks.Add(newTask);
-            newTask = null;
+            newTaskDescription = null;
+            newTaskDate = DateTime.Now;
             StateHasChanged();
         }
     }
