@@ -12,7 +12,7 @@
         @foreach (var task in tasks)
         {
             <tr>
-                <td>@task.Date.ToString()</td>
+                <td>@task.Date.ToString("dd/MM HH:mm")</td>
                 <td>@task.Description</td>
                 <td><InputCheckbox @bind-Value="task.Ready" /></td>
             </tr>
@@ -21,7 +21,6 @@
 </table>
 <div class="mt-3">
     <input @bind="newTaskDescription" @bind:event="oninput" placeholder="Введите новую задачу" class="form-control mb-2" />
-    <InputDate @bind-Value="newTaskDate" class="form-control mb-2" />
     <button class="btn btn-primary" @onclick="AddtoList">Добавить задачу</button>
 </div>
 
